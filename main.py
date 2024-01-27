@@ -1,16 +1,21 @@
-# This is a sample Python script.
+from ultralytics import YOLO
+import os
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+path = 'C:\\Users\\lashi\\Desktop\\bones\\images\\'
 
+model = YOLO('C:\\Users\\lashi\\Desktop\\bones\\runs\\detect\\train2\\weights\\best.pt')
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+path_tr = "C:\\Users\\lashi\\Desktop\\bones\\train\\images\\"
+path_val = "C:\\Users\\lashi\\Desktop\\bones\\val\\images\\"
+dir_tr = os.fsdecode(path_tr)
+dir_val = os.fsdecode(path_val)
+arr = []
+for file in os.listdir(dir_tr):
+    filename = os.fsdecode(file)
+    arr.append(path_tr + "\\" + filename)
+for file in os.listdir(dir_val):
+    filename = os.fsdecode(file)
+    arr.append(path_val + filename)
+#results = model.train(data='data.yaml', epochs=500, imgsz=640, patience=0)
+for n in arr:
+    model.predict(n, save=True, imgsz=320, conf=0.17, save_crop=True)
